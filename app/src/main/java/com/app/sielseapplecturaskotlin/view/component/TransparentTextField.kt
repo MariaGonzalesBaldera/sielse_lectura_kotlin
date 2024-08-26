@@ -33,9 +33,9 @@ fun TransparentTextField(
   keyboardActions: KeyboardActions,
   imeAction: ImeAction,
   trailingIcon: @Composable() (() -> Unit)? = null,
-  visualTransformation: VisualTransformation = VisualTransformation.None
+  visualTransformation: VisualTransformation = VisualTransformation.None,
+  isValid: MutableState<Boolean>
 ) {
-  var isValid by remember { mutableStateOf(true) }
   val errorColor = Color.Red
   val primaryColor = colorResource(id = R.color.purple)
 
@@ -46,23 +46,21 @@ fun TransparentTextField(
     value = textFieldValue.value.take(maxChar ?: 40),
     onValueChange = { value ->
       textFieldValue.value = value
-      isValid = value.isNotEmpty()
+      isValid.value = value.isNotEmpty()
     },
     label = {
       Text(text = textLabel)
     },
-    isError = !isValid,
+    isError = !isValid.value,
     trailingIcon = trailingIcon,
     keyboardOptions = KeyboardOptions(
-      capitalization = capitalization,
       keyboardType = keyboardType,
       imeAction = imeAction
     ),
     keyboardActions = keyboardActions,
     visualTransformation = visualTransformation,
-
   )
-  if (!isValid) {
+  if (!isValid.value) {
     Text(
       text = "Please enter valid text", color = errorColor,
       modifier = Modifier.padding(start = 10.dp, end = 10.dp)

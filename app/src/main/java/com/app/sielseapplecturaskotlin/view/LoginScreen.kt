@@ -48,16 +48,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.NavController
 import com.app.sielseapplecturaskotlin.view.component.BotonDefault
 import com.app.sielseapplecturaskotlin.view.component.TransparentTextField
 import com.app.sielseapplecturaskotlin.R
 import com.app.sielseapplecturaskotlin.data.dto.Empresa
+import com.app.sielseapplecturaskotlin.navigation.AppScreens
+import com.app.sielseapplecturaskotlin.utils.toast
 import com.app.sielseapplecturaskotlin.view.component.EmpresaDialog
+import com.app.sielseapplecturaskotlin.view.component.ProgressDialogLoading
 import com.app.sielseapplecturaskotlin.viewModel.LecturaViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginComponent(lecturaViewModel: LecturaViewModel) {
+fun LoginComponent(navController: NavController,lecturaViewModel: LecturaViewModel) {
   val context = LocalContext.current
   val focusManager = LocalFocusManager.current
   var passwordVisibility by remember { mutableStateOf(false) }
@@ -69,8 +73,20 @@ fun LoginComponent(lecturaViewModel: LecturaViewModel) {
   var dialogResponse by remember { mutableStateOf(false) }
   var showDialog by remember { mutableStateOf(false) }
   var companyList by remember { mutableStateOf<List<Empresa>>(emptyList()) }
+  val isUserValid = remember { mutableStateOf(true) }
+  val isPasswordValid = remember { mutableStateOf(true) }
 
   val titleCompany = remember { mutableStateOf("Seleccione su empresa") }
+
+  lecturaViewModel.validModel.observe(lifecycleOwner) { value ->
+    if (value == true) {
+      dialogResponse = false
+     navController.navigate(route = AppScreens.ScreenListBooks.route)
+    } else {
+      dialogResponse = false
+      context.toast("Credenciales inválidas")
+    }
+  }
 
   Scaffold(
     topBar = {
@@ -99,8 +115,20 @@ fun LoginComponent(lecturaViewModel: LecturaViewModel) {
           modifier = Modifier.padding(horizontal = 80.dp),
           title = "INGRESAR",
           onClick = {
-            lecturaViewModel.authentication(context)
+            isUserValid.value = userValue.value.isNotEmpty()
+            isPasswordValid.value = passwordValue.value.isNotEmpty()
+
+            if (isUserValid.value && isPasswordValid.value) {
+              if(titleCompany.value=="" || titleCompany.value=="Seleccione su empresa"){
+                context.toast("Seleccione una empresa")
+              }else{
+                lecturaViewModel.authentication(context,"mtito","pwd123")
+               // lecturaViewModel.authentication(context,userValue.value,passwordValue.value)
+              }
+            }
           })
+        ProgressDialogLoading(onDismiss = { dialogResponse = false }, showProgress = dialogResponse)
+
       }
     },
     content = { paddingValues ->
@@ -114,9 +142,7 @@ fun LoginComponent(lecturaViewModel: LecturaViewModel) {
             modifier = Modifier
               .fillMaxWidth()
               .padding(paddingValues)
-
           ) {
-
             Box(
               contentAlignment = Alignment.Center,
               modifier = Modifier
@@ -146,7 +172,9 @@ fun LoginComponent(lecturaViewModel: LecturaViewModel) {
                       focusManager.moveFocus(FocusDirection.Down)
                     }
                   ),
-                  imeAction = ImeAction.Next
+                  imeAction = ImeAction.Next,
+                  isValid = isUserValid
+
                 )
                 Spacer(
                   modifier = Modifier
@@ -184,7 +212,9 @@ fun LoginComponent(lecturaViewModel: LecturaViewModel) {
                     VisualTransformation.None
                   } else {
                     PasswordVisualTransformation()
-                  }
+                  },
+                  isValid = isPasswordValid
+
                 )
               }
               Spacer(

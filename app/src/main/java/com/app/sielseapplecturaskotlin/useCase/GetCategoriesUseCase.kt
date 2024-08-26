@@ -8,6 +8,7 @@ import com.app.sielseapplecturaskotlin.data.dto.Empresa
 import com.app.sielseapplecturaskotlin.data.dto.OperacionResult
 import com.app.sielseapplecturaskotlin.data.repository.QuoteRepository
 import com.app.sielseapplecturaskotlin.utils.isConnected
+import com.app.sielseapplecturaskotlin.utils.toast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import javax.inject.Inject
@@ -34,13 +35,14 @@ class GetCategoriesUseCase @Inject constructor(
     }
   }
 
-  suspend fun getAuthentication(context: Context, user: String, password: String) {
+  suspend fun getAuthentication(context: Context, user: String, password: String):Boolean {
     if (isConnected(context)) {
       val response = repository.getAuthentication(user, password)
       if (response.isSuccessful) {
         val result = response.body()?.operacion
         if (result?.a == false) {
           Log.e("Error", "Error login")
+          return false
         } else {
           val datosJson: Map<String, Any> =
             Gson().fromJson(result?.b, object : TypeToken<Map<String, Any>>() {}.type)
@@ -55,13 +57,18 @@ class GetCategoriesUseCase @Inject constructor(
               usuarioValido = usuarioJson["c"] as Boolean,
               mensajeResultado = usuarioJson["d"] as String
             )
+            return true
+
           }
+          return false
         }
       } else {
         Log.e("ERROR", response.errorBody()?.string().orEmpty())
+        return false
       }
     } else {
-      //busqueda sin conexion
+      context.toast("Conectese a internet")
+      return false
     }
 
   }
