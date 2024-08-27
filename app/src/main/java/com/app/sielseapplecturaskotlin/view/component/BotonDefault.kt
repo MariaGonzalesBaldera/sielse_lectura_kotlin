@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -19,12 +20,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.sielseapplecturaskotlin.R
 
+import androidx.compose.ui.res.painterResource
+
 @Composable
 fun BotonDefault(
   modifier: Modifier = Modifier,
   title: String,
   onClick: () -> Unit,
-  icon: ImageVector? = null
+  icon: Painter? = null
 ) {
   Button(
     colors = ButtonDefaults.buttonColors(
@@ -32,12 +35,14 @@ fun BotonDefault(
     ),
     shape = RoundedCornerShape(50),
     onClick = onClick,
-    modifier = modifier.fillMaxWidth().height(50.dp)
+    modifier = modifier
+      .fillMaxWidth()
+      .height(50.dp)
   ) {
-    Row() {
+    Row {
       icon?.let {
         Icon(
-          imageVector = it,
+          painter = it,
           contentDescription = "Icono",
           modifier = Modifier.padding(horizontal = 2.dp),
           tint = colorResource(id = R.color.white)

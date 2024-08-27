@@ -30,20 +30,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.app.sielseapplecturaskotlin.R
 
-@Preview(showBackground = true)
 @Composable
-fun ListDetail() { //onClick: () -> Unit
+fun ListDetail(onClick: () -> Unit) {
   var isChecked by remember { mutableStateOf(false) }
   var expanded by remember { mutableStateOf(false) }
   val items = listOf("ruta", "suministro", "medidor")
   var selectedText by remember { mutableStateOf(items[0]) }
 
-  Column(modifier = Modifier.fillMaxSize()) {
+  Column(modifier = Modifier.fillMaxSize() ) {
     Row(modifier = Modifier.padding(15.dp), verticalAlignment = Alignment.CenterVertically) {
       Text(text = "Buscar: ", fontSize = 16.sp)
       Box(modifier = Modifier.wrapContentSize(Alignment.Center)) {
@@ -88,8 +86,8 @@ fun ListDetail() { //onClick: () -> Unit
       }    }
     Box(
       modifier = Modifier
-        .clickable { } //onClick()
-        .clickable { isChecked = !isChecked }
+        .clickable {onClick() } //onClick()
+       // .clickable { isChecked = !isChecked }
         .fillMaxWidth()
         .border(1.dp, colorResource(id = R.color.primary))
         .padding(vertical = 8.dp)

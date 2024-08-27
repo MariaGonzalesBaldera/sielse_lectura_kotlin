@@ -125,6 +125,8 @@ fun ScreenListBooks(navController: NavController) {
         NavHost(navController = navController, startDestination = "screen1") {
           composable("screen1") { Screen1(navController) }
           composable("screen2") { Screen2(navController) }
+          composable("screen3") { Screen3(navController) }
+
         }
       }
     }
@@ -137,7 +139,11 @@ fun Screen1(navController: NavController) {
 
 @Composable
 fun Screen2(navController: NavController) {
-  ListDetail() //{ navController.popBackStack() }
+  ListDetail() { navController.navigate("screen3") }
+}
+@Composable
+fun Screen3(navController: NavController) {
+  ScreenReading() //{ navController.popBackStack() }
 }
 @Composable
 fun MenuDrawer(
