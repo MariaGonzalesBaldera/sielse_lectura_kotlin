@@ -6,4 +6,7 @@ sealed class AppScreens(val route: String) {
   object ScreenListBooks:AppScreens("ScreenListBooks")
   object ScreenReadingList:AppScreens("ScreenReadingList")
   object ListDetail:AppScreens("ListDetail")
+  object ScreenPhoto:AppScreens("ScreenPhoto")
+  object LocationScreen:AppScreens("LocationScreen")
+  object LocationMap:AppScreens("LocationMap")
 }

@@ -1,5 +1,6 @@
 package com.app.sielseapplecturaskotlin.view
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -27,36 +29,112 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.app.sielseapplecturaskotlin.R
+import com.app.sielseapplecturaskotlin.navigation.AppScreens
+import com.app.sielseapplecturaskotlin.utils.toast
 import com.app.sielseapplecturaskotlin.view.component.BotonDefault
 import com.app.sielseapplecturaskotlin.view.component.ButtonSystem
+import com.app.sielseapplecturaskotlin.view.component.ProgressDialogLoading
+import com.app.sielseapplecturaskotlin.view.component.TransparentTextField
 
-@Preview(showBackground = true)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ScreenReading() {
+fun ScreenReading(navController: NavController) {
   var expanded by remember { mutableStateOf(false) }
-  val items = listOf("ruta", "suministro", "medidor")
+  val items = listOf(
+    "OK",
+    "DESCENTRADO SIN LECTURA",
+    "NO DISPLAYA",
+    "IMPEDIMEN SIN LECTURA",
+    "SERIE ERRADA",
+    "CAJA FUERTE CON LECTURA",
+    "LECTURA VERIFICADA",
+    "INTERIOR SIN LECTURA",
+    "TAPA/VISOR DAÑADO",
+    "SIN MEDIDOR",
+    "CDIRECTA CON LECTURA",
+    "NO UBICADO",
+    "MEDIDOR DAÑADO",
+    "INTERIOR SIN LECTURA",
+    "TAPA/VISOR DAÑADO",
+    "SIN MEDIDOR",
+    "CDIRECTA CON LECTURA",
+    "NO UBICADO",
+    "MEDIDOR DAÑADO"
+  )
   var selectedText by remember { mutableStateOf(items[0]) }
+  val isValueValid = remember { mutableStateOf(true) }
+  val valueValue = remember { mutableStateOf("") }
+  val focusManager = LocalFocusManager.current
 
-  Scaffold (
+  Scaffold(
+    bottomBar = {
+      Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(bottom = 10.dp)
+      ) {
+        ButtonSystem(
+          title = "ANTERIOR",
+          onClick = {},
+          widthValue = 180.dp,
+          colorValue = colorResource(id = R.color.green)
+        )
+        ButtonSystem(
+          title = "SIGUIENTE",
+          onClick = {},
+          widthValue = 180.dp,
+          colorValue = colorResource(id = R.color.green)
+        )
+      }
+    },
     content = { paddingValues ->
-      Column(modifier = Modifier.fillMaxSize()) {
+      Column(
+        modifier = Modifier.fillMaxSize()
+      ) {
+        Column(
+          horizontalAlignment = Alignment.CenterHorizontally,
+          modifier = Modifier.fillMaxWidth()
+        ) {
+          Text(text = "Obteniendo posición", color = Color.Red)
+        }
+
         Row(
           verticalAlignment = Alignment.CenterVertically,
           horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally),
           modifier = Modifier
-            .padding(paddingValues)
             .fillMaxWidth()
         ) {
-          ButtonSystem(title = "Fotos", onClick = {})
-          ButtonSystem(title = "Mapa", onClick = {})
+          ButtonSystem(
+            title = "Fotos",
+            onClick = {
+              navController.navigate(route = AppScreens.ScreenPhoto.route)
+            },
+            widthValue = 140.dp,
+            colorValue = colorResource(id = R.color.primary)
+          )
+          ButtonSystem(
+            title = "Mapa",
+            onClick = {
+              navController.navigate(route = AppScreens.LocationScreen.route)
+            },
+            widthValue = 140.dp,
+            colorValue = colorResource(id = R.color.primary)
+          )
         }
-        Column(modifier = Modifier.padding(10.dp)) {
+        Column(modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp)) {
           Text(text = "RUTA:                   000000000000000000")
           Text(text = "NOMBRE:            000000000000000000")
           Text(text = "DIRECCIÓN:        000000000000000000")
@@ -67,8 +145,18 @@ fun ScreenReading() {
             .fillMaxWidth()
             .padding(horizontal = 10.dp, vertical = 15.dp)
         ) {
-          Text(text = "valor de lectura .")
-
+          TransparentTextField(
+            textFieldValue = valueValue,
+            textLabel = "valor de lectura",
+            keyboardType = KeyboardType.Number,
+            keyboardActions = KeyboardActions(
+              onNext = {
+                focusManager.moveFocus(FocusDirection.Down)
+              }
+            ),
+            imeAction = ImeAction.None,
+            isValid = isValueValid
+          )
           Box(
             modifier = Modifier
               .wrapContentSize(Alignment.Center)
@@ -77,9 +165,10 @@ fun ScreenReading() {
             Row(
               modifier = Modifier
                 .fillMaxWidth()
+                .padding(horizontal = 10.dp)
                 .border(1.dp, Color.Gray)
-                .clickable { expanded = true }
-                .padding(8.dp),
+                .padding(10.dp)
+                .clickable { expanded = true },
               verticalAlignment = Alignment.CenterVertically,
               horizontalArrangement = Arrangement.SpaceBetween // Espacia entre el texto y el icono
             ) {
@@ -123,9 +212,9 @@ fun ScreenReading() {
           Column(modifier = Modifier.padding(vertical = 12.dp, horizontal = 100.dp)) {
             BotonDefault(
               title = "GUARDAR",
-              onClick = { /*TODO*/ },
-              icon = saveIcon)
-
+              onClick = { },
+              icon = saveIcon
+            )
           }
         }
       }

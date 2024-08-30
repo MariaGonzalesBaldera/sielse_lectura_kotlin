@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.app.sielseapplecturaskotlin.R
 
@@ -21,15 +22,17 @@ fun ButtonSystem(
   modifier: Modifier = Modifier,
   title: String,
   onClick: () -> Unit,
+  widthValue: Dp,
+  colorValue: Color
 ) {
   Column(
     verticalArrangement = Arrangement.Center,
     horizontalAlignment = Alignment.CenterHorizontally,
     modifier = modifier
       .clickable { onClick() }
-      .width(120.dp)
+      .width(widthValue)
       .height(40.dp)
-      .background(colorResource(id = R.color.primary), shape = RoundedCornerShape(10))
+      .background(color = colorValue, shape = RoundedCornerShape(10))
   ) {
     Text(text = title, color = Color.White)
   }
