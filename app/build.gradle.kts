@@ -101,4 +101,16 @@ dependencies {
   implementation("androidx.room:room-ktx:${rootProject.extra["room_version"]}")
   kapt("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
 
+  //coil - imagenens
+  implementation("io.coil-kt:coil-compose:2.7.0")
+
+  //mapbox
+  implementation("com.mapbox.maps:android:11.4.1")
+  implementation("com.mapbox.extension:maps-compose:11.4.1")
+
+  //ubication
+  implementation("com.google.android.gms:play-services-location:21.3.0")
+  implementation("com.google.android.gms:play-services-maps:18.1.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
+
 }

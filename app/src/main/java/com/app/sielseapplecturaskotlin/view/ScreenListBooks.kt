@@ -71,7 +71,7 @@ private fun ShowPrev() {
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("RememberReturnType", "UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ScreenListBooks(navController: NavController) {
+fun ScreenListBooks(navControllerPrincipal: NavController) {
   val drawerState = rememberDrawerState(DrawerValue.Closed)
   val coroutineScope = rememberCoroutineScope()
 
@@ -125,7 +125,7 @@ fun ScreenListBooks(navController: NavController) {
         NavHost(navController = navController, startDestination = "screen1") {
           composable("screen1") { Screen1(navController) }
           composable("screen2") { Screen2(navController) }
-          composable("screen3") { Screen3(navController) }
+          composable("screen3") { Screen3(navControllerPrincipal) }
 
         }
       }
@@ -142,8 +142,8 @@ fun Screen2(navController: NavController) {
   ListDetail() { navController.navigate("screen3") }
 }
 @Composable
-fun Screen3(navController: NavController) {
-  ScreenReading() //{ navController.popBackStack() }
+fun Screen3(navControllerPrincipal:NavController) {
+  ScreenReading(navControllerPrincipal) //{ navController.popBackStack() }
 }
 @Composable
 fun MenuDrawer(
