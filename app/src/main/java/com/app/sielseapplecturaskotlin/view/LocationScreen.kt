@@ -161,7 +161,6 @@ fun LocationScreen(onBackClick: () -> Unit,navController:NavController) {
   }
 }
 
-
 @Composable
 fun MapBoxMap(
   modifier: Modifier = Modifier,
