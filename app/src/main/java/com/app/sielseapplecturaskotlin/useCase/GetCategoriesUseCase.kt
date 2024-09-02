@@ -3,10 +3,8 @@ package com.app.sielseapplecturaskotlin.useCase
 import android.content.Context
 import android.util.Log
 import com.app.sielseapplecturaskotlin.data.database.entity.Autenticacion
-import com.app.sielseapplecturaskotlin.data.database.entity.User
 import com.app.sielseapplecturaskotlin.data.dto.Empresa
-import com.app.sielseapplecturaskotlin.data.dto.OperacionResult
-import com.app.sielseapplecturaskotlin.data.repository.QuoteRepository
+import com.app.sielseapplecturaskotlin.data.network.QuoteService
 import com.app.sielseapplecturaskotlin.utils.isConnected
 import com.app.sielseapplecturaskotlin.utils.toast
 import com.google.gson.Gson
@@ -14,11 +12,11 @@ import com.google.gson.reflect.TypeToken
 import javax.inject.Inject
 
 class GetCategoriesUseCase @Inject constructor(
-  private val repository: QuoteRepository
+  private val repository: QuoteService
 ) {
 
   suspend fun getCategories(): List<Empresa>? {
-    val response = repository.getCateriesRepository()
+    val response = repository.getListCategories()
     return if (response.isSuccessful) {
       val operacion = response.body()?.operacion
       operacion?.let {
@@ -37,7 +35,7 @@ class GetCategoriesUseCase @Inject constructor(
 
   suspend fun getAuthentication(context: Context, user: String, password: String):Boolean {
     if (isConnected(context)) {
-      val response = repository.getAuthentication(user, password)
+      val response = repository.authenticationServices(user, password)
       if (response.isSuccessful) {
         val result = response.body()?.operacion
         if (result?.a == false) {

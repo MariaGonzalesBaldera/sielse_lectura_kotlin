@@ -4,6 +4,7 @@ import com.app.sielseapplecturaskotlin.data.dto.ResponseApi
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 
@@ -105,7 +106,7 @@ interface QuoteApliClient {
     @Query("codigoZonaAdministrativa") codigoZonaAdministrativa:String,
   ): Response<ResponseApi>
 
-  @GET("/lecturas/enviarLecturaFoto")
+  @POST("/lecturas/enviarLecturaFoto")
   suspend fun enviarFoto(
     @Header("Authorization") authorization: String,
     @Query("suministro") suministro:String,
