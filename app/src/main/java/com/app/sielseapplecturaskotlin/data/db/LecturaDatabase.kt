@@ -1,14 +1,14 @@
-package com.app.sielseapplecturaskotlin.data.database
+package com.app.sielseapplecturaskotlin.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
-import com.app.sielseapplecturaskotlin.data.database.dao.LecturaDao
-import com.app.sielseapplecturaskotlin.data.database.entity.Foto
-import com.app.sielseapplecturaskotlin.data.database.entity.Libro
-import com.app.sielseapplecturaskotlin.data.database.entity.Observacion
-import com.app.sielseapplecturaskotlin.data.database.entity.Suministro
+import com.app.sielseapplecturaskotlin.data.db.dao.LecturaDao
+import com.app.sielseapplecturaskotlin.data.db.entity.Foto
+import com.app.sielseapplecturaskotlin.data.db.entity.Libro
+import com.app.sielseapplecturaskotlin.data.db.entity.Observacion
+import com.app.sielseapplecturaskotlin.data.db.entity.Suministro
 import com.google.android.gms.maps.model.LatLng
 
 @Database(
@@ -16,7 +16,7 @@ import com.google.android.gms.maps.model.LatLng
   version = 1
 )
 @TypeConverters(Converters::class)
-abstract class lecturaDatabase : RoomDatabase() {
+abstract class LecturaDatabase : RoomDatabase() {
   abstract fun getLectura(): LecturaDao
 }
 

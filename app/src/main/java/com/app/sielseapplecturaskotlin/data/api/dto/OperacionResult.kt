@@ -1,4 +1,4 @@
-package com.app.sielseapplecturaskotlin.data.dto
+package com.app.sielseapplecturaskotlin.data.api.dto
 
 data class OperacionResult(
   val resultado: Boolean,

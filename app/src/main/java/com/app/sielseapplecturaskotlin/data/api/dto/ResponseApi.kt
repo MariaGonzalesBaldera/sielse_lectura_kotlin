@@ -1,4 +1,4 @@
-package com.app.sielseapplecturaskotlin.data.dto
+package com.app.sielseapplecturaskotlin.data.api.dto
 
 import com.google.gson.annotations.SerializedName
 

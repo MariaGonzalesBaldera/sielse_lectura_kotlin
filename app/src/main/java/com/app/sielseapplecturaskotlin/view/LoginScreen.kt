@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,11 +45,12 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import com.app.sielseapplecturaskotlin.view.component.BotonDefault
 import com.app.sielseapplecturaskotlin.view.component.TransparentTextField
 import com.app.sielseapplecturaskotlin.R
-import com.app.sielseapplecturaskotlin.data.dto.Empresa
+import com.app.sielseapplecturaskotlin.data.api.dto.Empresa
 import com.app.sielseapplecturaskotlin.navigation.AppScreens
 import com.app.sielseapplecturaskotlin.utils.toast
 import com.app.sielseapplecturaskotlin.view.component.EmpresaDialog
@@ -61,10 +63,9 @@ fun LoginComponent(navController: NavController,lecturaViewModel: LecturaViewMod
   val context = LocalContext.current
   val focusManager = LocalFocusManager.current
   var passwordVisibility by remember { mutableStateOf(false) }
-  val checkedStateValue = remember { ("0") }
-  var checkedState by remember { mutableStateOf("1") }
-  val userValue = remember { mutableStateOf("") }
-  val passwordValue = remember { mutableStateOf("") }
+  val userCredentials by lecturaViewModel.userCredentials.collectAsState()
+  val userValue = remember { mutableStateOf(userCredentials?.login ?:"") }
+  val passwordValue = remember { mutableStateOf(userCredentials?.password ?:"") }
   val lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
   var dialogResponse by remember { mutableStateOf(false) }
   var showDialog by remember { mutableStateOf(false) }
@@ -74,15 +75,15 @@ fun LoginComponent(navController: NavController,lecturaViewModel: LecturaViewMod
 
   val titleCompany = remember { mutableStateOf("Seleccione su empresa") }
 
-  lecturaViewModel.validModel.observe(lifecycleOwner) { value ->
-    if (value == true) {
+  lecturaViewModel.loginSuccess.observe(lifecycleOwner, Observer { isSuccess ->
+    if (isSuccess) {
       dialogResponse = false
-     navController.navigate(route = AppScreens.ScreenListBooks.route)
+      navController.navigate(route = AppScreens.ScreenListBooks.route)
     } else {
       dialogResponse = false
       context.toast("Credenciales inválidas")
     }
-  }
+  })
 
   Scaffold(
     topBar = {
@@ -118,8 +119,8 @@ fun LoginComponent(navController: NavController,lecturaViewModel: LecturaViewMod
               if(titleCompany.value=="" || titleCompany.value=="Seleccione su empresa"){
                 context.toast("Seleccione una empresa")
               }else{
-                lecturaViewModel.authentication(context,"mtito","pwd123")
-               // lecturaViewModel.authentication(context,userValue.value,passwordValue.value)
+               // lecturaViewModel.authentication(context,"mtito","pwd123")
+               lecturaViewModel.authentication(context,userValue.value,passwordValue.value)
               }
             }
           })

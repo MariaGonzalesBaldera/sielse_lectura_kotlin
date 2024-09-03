@@ -1,6 +1,6 @@
 package com.app.sielseapplecturaskotlin.di
 
-import com.app.sielseapplecturaskotlin.data.network.QuoteApliClient
+import com.app.sielseapplecturaskotlin.data.api.QuoteApliClient
 import com.app.sielseapplecturaskotlin.data.session.SessionManager
 import com.google.gson.GsonBuilder
 import dagger.Module

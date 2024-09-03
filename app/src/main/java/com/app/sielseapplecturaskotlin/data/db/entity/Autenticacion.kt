@@ -1,4 +1,4 @@
-package com.app.sielseapplecturaskotlin.data.database.entity
+package com.app.sielseapplecturaskotlin.data.db.entity
 
 data class Autenticacion(
   val loginTrabajador: String = "",

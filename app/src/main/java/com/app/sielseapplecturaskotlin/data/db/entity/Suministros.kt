@@ -1,4 +1,4 @@
-package com.app.sielseapplecturaskotlin.data.database.entity
+package com.app.sielseapplecturaskotlin.data.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

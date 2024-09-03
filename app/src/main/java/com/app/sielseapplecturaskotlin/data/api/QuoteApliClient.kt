@@ -1,6 +1,6 @@
-package com.app.sielseapplecturaskotlin.data.network
+package com.app.sielseapplecturaskotlin.data.api
 
-import com.app.sielseapplecturaskotlin.data.dto.ResponseApi
+import com.app.sielseapplecturaskotlin.data.api.dto.ResponseApi
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header

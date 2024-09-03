@@ -1,7 +1,7 @@
-package com.app.sielseapplecturaskotlin.data.network
+package com.app.sielseapplecturaskotlin.data.api
 
 import android.util.Log
-import com.app.sielseapplecturaskotlin.data.dto.ResponseApi
+import com.app.sielseapplecturaskotlin.data.api.dto.ResponseApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

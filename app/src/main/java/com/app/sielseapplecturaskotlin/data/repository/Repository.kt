@@ -1,42 +1,32 @@
-package com.app.sielseapplecturaskotlin.useCase
+package com.app.sielseapplecturaskotlin.data.repository
 
 import android.content.Context
 import android.util.Log
-import com.app.sielseapplecturaskotlin.data.db.entity.Autenticacion
-import com.app.sielseapplecturaskotlin.data.api.dto.Empresa
 import com.app.sielseapplecturaskotlin.data.api.QuoteService
+import com.app.sielseapplecturaskotlin.data.api.dto.ResponseApi
+import com.app.sielseapplecturaskotlin.data.db.dao.LecturaDao
+import com.app.sielseapplecturaskotlin.data.db.entity.Autenticacion
 import com.app.sielseapplecturaskotlin.utils.isConnected
-import com.app.sielseapplecturaskotlin.utils.toast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import retrofit2.Response
 import javax.inject.Inject
 
-class GetCategoriesUseCase @Inject constructor(
-  private val repository: QuoteService
-) {
-
-  suspend fun getCategories(): List<Empresa>? {
-    val response = repository.getListCategories()
-    return if (response.isSuccessful) {
-      val operacion = response.body()?.operacion
-      operacion?.let {
-        val empresasJson = it.b
-        val gson = Gson()
-
-        val type = object : TypeToken<Map<String, List<Empresa>>>() {}.type
-        val empresaMap: Map<String, List<Empresa>> = gson.fromJson(empresasJson, type)
-        empresaMap["Empresa"]
-      }
-    } else {
-      Log.e("ERROR", response.errorBody().toString())
-      null
-    }
+class QuoteRepository @Inject constructor(
+  private val api: QuoteService,
+  private val dao: LecturaDao
+){
+  suspend fun getCateriesRepository(): Response<ResponseApi> {
+    val response: Response<ResponseApi> = api.getListCategories()
+    Log.e("get categories", "repository " + response.message())
+    return response
   }
 
-/*
-  suspend fun getAuthentication(context: Context, user: String, password: String):Boolean {
-    if (isConnected(context)) {
-      val response = repository.authenticationServices(user, password)
+  suspend fun getAuthentication(user:String, password:String,context:Context): Boolean {
+    if(!isConnected(context)){
+      return false
+    }else{
+      val response = api.authenticationServices(user, password)
       if (response.isSuccessful) {
         val result = response.body()?.operacion
         if (result?.a == false) {
@@ -65,12 +55,7 @@ class GetCategoriesUseCase @Inject constructor(
         Log.e("ERROR", response.errorBody()?.string().orEmpty())
         return false
       }
-    } else {
-      context.toast("Conectese a internet")
-      return false
+
     }
-
   }
-*/
-
 }

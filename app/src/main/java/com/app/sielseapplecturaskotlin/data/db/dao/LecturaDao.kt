@@ -1,4 +1,4 @@
-package com.app.sielseapplecturaskotlin.data.database.dao
+package com.app.sielseapplecturaskotlin.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -7,11 +7,11 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.app.sielseapplecturaskotlin.data.database.entity.Foto
-import com.app.sielseapplecturaskotlin.data.database.entity.Lectura
-import com.app.sielseapplecturaskotlin.data.database.entity.Libro
-import com.app.sielseapplecturaskotlin.data.database.entity.Observacion
-import com.app.sielseapplecturaskotlin.data.database.entity.Suministro
+import com.app.sielseapplecturaskotlin.data.db.entity.Foto
+import com.app.sielseapplecturaskotlin.data.db.entity.Lectura
+import com.app.sielseapplecturaskotlin.data.db.entity.Libro
+import com.app.sielseapplecturaskotlin.data.db.entity.Observacion
+import com.app.sielseapplecturaskotlin.data.db.entity.Suministro
 import kotlinx.coroutines.flow.Flow
 
 @Dao
